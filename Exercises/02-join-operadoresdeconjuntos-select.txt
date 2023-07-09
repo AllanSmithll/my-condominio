@@ -10,15 +10,12 @@ c) Escreva uma consulta SQL para obter a lista de moradores exclusivos da tabela
 a) Escreva uma consulta SQL para obter a lista de pagamentos juntamente com os nomes dos moradores correspondentes da tabela PAGAMENTO e MORADOR usando um INNER JOIN.
 b) Escreva uma consulta SQL para obter a lista de todas as unidades habitacionais juntamente com os nomes dos moradores, mesmo que não haja moradores associados, usando um LEFT JOIN.
 
-RESPOSTAS:
+RESPOSTAS
 
 1-
-select nome, email, numeroUnidade
+a) 
+select nome
+from morador
+union
+select nome
 from morador;
-
-2- 
-a)
-select nome, email, numeroUnidade
-from morador;
-
-b)

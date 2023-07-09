@@ -49,7 +49,7 @@ create table SINDICO (
 	cpf char(11) not null primary key,
 	ativo boolean not null,
 	data_inicio date not null,
-	data_termino date
+	data_termino date not null
 );
 
 -- Tabela MANDATO
@@ -57,10 +57,14 @@ create table MANDATO (
 	codigo char(8) not null,
 	cpfSindico char(11) not null,
 	data_inicial date not null,
-	data_termino date,
+	data_termino date not null,
 	observacoes text,
 	primary key (cpfSindico, codigo),
     foreign key (cpfSindico) references SINDICO (cpf)
 );
+
+ALTER TABLE SINDICO
+ADD CONSTRAINT unique_sindico_cpf
+UNIQUE (cpf);
 
 ALTER TABLE PAGAMENTO ADD CONSTRAINT valor_positivo_check check (valor > 0);
