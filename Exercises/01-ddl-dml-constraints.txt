@@ -1,0 +1,32 @@
+DML - Inserção de Dados:
+Inserir um novo morador com nome "Maria Santos", CPF "12345678900", e-mail "maria.santos@example.com" e número da unidade habitacional "101" no condomínio.
+
+DML - Atualização de Dados:
+Atualizar o valor do pagamento com ID 1 para R$ 500,00.
+
+DDL - Criação de Tabela:
+Criar uma nova tabela chamada "Despesas" para armazenar informações sobre despesas do condomínio, com as colunas ID, Data, Valor e Descrição.
+
+DDL - Alteração de Tabela:
+Adicionar uma nova coluna chamada "Observações" à tabela "Unidade_Habitacional" do tipo TEXT.
+
+Constraints - Restrição de Cheque:
+Adicionar uma restrição para garantir que o valor do pagamento seja sempre maior que zero na tabela "Pagamento".
+
+RESPOSTAS
+
+1-
+select inserir_morador('12345678900', 'Maria Santos', 'maria.santos@example.com', 1);
+
+2-
+update pagamento
+set valor = 500.00
+where id =1;
+select * from pagamento;
+
+3- Passo
+
+4- Passo
+
+5-
+ALTER TABLE PAGAMENTO ADD CONSTRAINT valor_positivo_check check (valor > 0);
