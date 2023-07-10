@@ -3,15 +3,19 @@
 -- Unidade Habitacional
 CREATE OR REPLACE Procedure inserirUnidadeHabitacional(
     p_bloco CHAR(1),
-    p_area DECIMAL
+    p_area DECIMAL,
+    p_proprietario varchar(100) DEFAULT 'Disponível'
 ) AS $$
 DECLARE
     v_proximo_id INT;
 BEGIN
     SELECT COALESCE(MAX(numero::INT) + 1, 1) INTO v_proximo_id
     FROM UNIDADE_HABITACIONAL;
-
     v_proximo_id := LPAD(v_proximo_id::TEXT, 4, '0');
+
+    if p_proprietario <> '' or p_proprietario <> ' '  then
+        INSERT INTO UNIDADE_HABITACIONAL (numero, bloco, area, proprietario) VALUES (v_proximo_id, p_bloco, p_area, p_proprietario);
+    end if;
 
     INSERT INTO UNIDADE_HABITACIONAL (numero, bloco, area)
     VALUES (v_proximo_id, p_bloco, p_area);

@@ -1,0 +1,54 @@
+Exercício 1:
+Crie uma view chamada "DadosMoradores" que retorna o nome, CPF e número da unidade habitacional de todos os moradores cadastrados no condomínio.
+
+Exercício 2:
+Crie uma view chamada "MoradoresProprietarios" que retorna o nome, email e número da unidade habitacional de todos os moradores que são também os proprietários das unidades em que residem.
+
+Exercício 3:
+Crie uma view chamada "UnidadesDisponiveis" que retorna o número e bloco das unidades habitacionais que estão disponíveis para locação, ou seja, unidades que não possuem nenhum morador associado.
+
+Exercício 4:
+Crie uma view chamada "TotalPagamentosPorMes" que retorna o mês e o total de pagamentos registrados para cada mês, considerando apenas os pagamentos do ano atual.
+
+Exercício 5:
+Crie uma view chamada "AreaComumDisponivel" que retorna o nome e horário de todas as áreas comuns disponíveis no momento, ou seja, áreas comuns que não estão sendo utilizadas por nenhum morador.
+
+RESPOSTAS
+
+1-
+create or replace view DadosMoradoresView as
+select nome, cpf, numerounidade
+from morador
+order by nome;
+
+2-
+create or replace view MoradoresComPropriedade as
+select nome, email, numerounidade
+from morador m
+where numerounidade in (
+	select numero
+	from unidade_habitacional u
+	where u.proprietario = m.nome
+);
+
+3-
+create or replace view UnidadesDisponiveis as
+select numero, bloco
+from unidade_habitacional
+where numero not in (
+	select numerounidade
+	from morador
+);
+
+4-
+create or replace view TotalPagamentosPorMes as
+select extract(month from data) as "Meses", sum(valor) as "Total Pago"
+from pagamento
+where extract(year from data) = extract(year from current_date)
+group by "Meses";
+
+5-
+create or replace view AreaComumDisponivel as
+select nome, horario
+from area_comum
+where disponibilidade = 'Disponível';

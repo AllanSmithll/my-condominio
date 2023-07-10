@@ -4,7 +4,7 @@ create table UNIDADE_HABITACIONAL (
 	numero serial not null primary key,
 	bloco char(1) not null,
 	area decimal not null default 20.00,
-	proprietario varchar(100) default 'Do condomínio',
+	proprietario varchar(100) default 'Disponível',
 	numero_moradores int not null default 0
 );
 
