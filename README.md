@@ -28,4 +28,4 @@ Para utilizar o banco de dados do condomínio, é necessário ter o PostgreSQL i
 
 ## Considerações Finais
 
-O projeto do banco de dados para condomínio visa fornecer uma base sólida para o gerenciamento das informações importantes relacionadas à administração e gestão do condomínio. É importante adaptar a estrutura e as funcionalidades do banco de dados de acordo com as necessidades específicas do condomínio em questão, aprimorando-o conforme necessário. Porém, tudo que aqui contém será apenas para fins didáticos.
+O projeto do banco de dados para condomínio visa fornecer uma base sólida para o gerenciamento das informações importantes relacionadas à administração e gestão do condomínio. Porém, tudo que aqui contém será apenas para fins didáticos.
