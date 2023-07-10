@@ -30,7 +30,7 @@ create table AREA_COMUM (
 	codigo char(5) not null primary key,
 	nome varchar(45) not null,
 	disponibilidade varchar(15) not null,
-	horario varchar(11) not null
+	horario char(11) not null
 );
 
 -- Tabela PAGAMENTO

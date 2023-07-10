@@ -119,3 +119,47 @@ BEGIN
     VALUES (p_codigo_mandato, p_cpf_sindico, p_data_inicial, p_data_final, p_observacoes);
 END;
 $$ LANGUAGE plpgsql;
+
+-- Área Comum
+CREATE OR REPLACE PROCEDURE inserirAreaComum(
+    p_codigo CHAR(5),
+    p_nome VARCHAR(45),
+    p_disponibilidade VARCHAR(15),
+    p_horario VARCHAR(11)
+) AS $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM AREA_COMUM WHERE codigo = p_codigo) THEN
+        RAISE EXCEPTION 'A área comum com o código % já está cadastrada.', p_codigo;
+    END IF;
+
+    IF EXISTS (SELECT 1 FROM AREA_COMUM WHERE nome = p_nome) THEN
+        RAISE EXCEPTION 'O nome % já está em uso para outra área comum.', p_nome;
+    END IF;
+
+    INSERT INTO AREA_COMUM (codigo, nome, disponibilidade, horario)
+    VALUES (p_codigo, p_nome, p_disponibilidade, p_horario);
+END;
+$$ LANGUAGE plpgsql;
+
+-- Pagamento
+CREATE OR REPLACE PROCEDURE inserirPagamentoMorador(
+    p_cpfMorador CHAR(11),
+    p_valor NUMERIC,
+    p_data DATE,
+    p_tipo VARCHAR(20)
+) AS $$
+DECLARE
+	v_proximo_id INT;
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM MORADOR WHERE cpf = p_cpfMorador) THEN
+        RAISE EXCEPTION 'O morador com CPF % não está cadastrado.', p_cpfMorador;
+    END IF;
+    IF p_valor <= 0 THEN
+        RAISE EXCEPTION 'O valor do pagamento deve ser maior que zero.';
+    END IF;
+	
+	SELECT COALESCE(MAX(id) + 1, 1) INTO v_proximo_id FROM PAGAMENTO;
+    INSERT INTO PAGAMENTO (id, cpfMorador, valor, data, tipo)
+    VALUES (v_proximo_id, p_cpfMorador, p_valor, p_data, p_tipo);
+END;
+$$ LANGUAGE plpgsql;

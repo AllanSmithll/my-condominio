@@ -1,0 +1,51 @@
+Exercício 1: Obter o nome e o email dos moradores que possuem unidades habitacionais com área superior à média das áreas de todas as unidades habitacionais.
+
+Exercício 2: Obter o nome dos moradores que possuem telefone cadastrado.
+
+Exercício 3: Obter o código e o nome das áreas comuns que estão disponíveis em pelo menos um horário durante o dia.
+
+Exercício 4: Obter o cpf e o nome do síndico cujo mandato está em andamento.
+
+Exercício 5: Obter o valor médio dos pagamentos realizados por cada morador.
+
+RESPOSTAS
+
+1-
+select nome, email
+from morador m
+where numerounidade in (
+	select numero
+	from unidade_habitacional
+	where area > (select avg(area)
+				 	from unidade_habitacional)
+);
+
+2-
+select nome
+from morador m
+where m.cpf in (
+	select cpf_morador
+	from telefone_morador t
+	where m.cpf = t.cpf_morador
+)
+
+3-
+select codigo, nome
+from area_comum
+where horario in (
+	select horario
+	from area_comum
+	where (SUBSTRING(horario FROM 1 FOR 5) < '12:00'
+		   and SUBSTRING(horario FROM 1 FOR 5) >= '06:00'
+	or SUBSTRING(horario FROM 7 FOR 5) >= '06:00'
+		   and SUBSTRING(horario FROM 7 FOR 5) < '12:00')
+);
+
+4-
+select s.cpf, m.nome
+from sindico s join morador m on s.cpf = m.cpf;
+
+5-
+select cpfmorador, round(avg(valor),2) as "valor média"
+from pagamento
+group by cpfmorador;
