@@ -5,7 +5,7 @@ create table UNIDADE_HABITACIONAL (
 	bloco char(1) not null,
 	area decimal not null default 20.00,
 	proprietario varchar(100) default 'Disponível',
-	numero_moradores int not null default 0
+	numero_moradores int not null default 0,
 	primary key (numero, bloco)
 );
 
@@ -15,7 +15,8 @@ create table MORADOR (
     nome varchar(100) not null,
     email varchar(50) not null,
 	numeroUnidade int not null,
-    foreign key (numeroUnidade) references UNIDADE_HABITACIONAL(numero) on delete cascade
+	blocoUnidade char(1) not null,
+    foreign key (numeroUnidade, blocoUnidade) references UNIDADE_HABITACIONAL(numero, bloco) on delete cascade
 );
 
 -- Tabela TELEFONE_MORADOR
@@ -62,6 +63,16 @@ create table MANDATO (
 	observacoes text,
 	primary key (cpfSindico, codigo),
     foreign key (cpfSindico) references SINDICO (cpf)
+);
+
+create table LOG_MORADORES(
+	id serial not null,
+	cpf char(11) not null,
+	nome varchar(100) not null,
+	data_registro date not null,
+	operacao char(6) not null,
+	primary key (id, cpf),
+	foreign key (cpf) references MORADOR
 );
 
 ALTER TABLE SINDICO

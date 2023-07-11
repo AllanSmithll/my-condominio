@@ -42,17 +42,17 @@ BEGIN
 
     SELECT numero_moradores INTO v_numero_moradores
     FROM UNIDADE_HABITACIONAL
-    WHERE numero = p_numero_unidade;
+    WHERE numero = p_numero_unidade and bloco = p_bloco;
 
     IF v_numero_moradores = 0 THEN
         UPDATE UNIDADE_HABITACIONAL
         SET proprietario = p_nome
-        WHERE numero = p_numero_unidade;
+        WHERE numero = p_numero_unidade and bloco = p_bloco;
     END IF;
 
     UPDATE UNIDADE_HABITACIONAL
     SET numero_moradores = numero_moradores + 1
-    WHERE numero = p_numero_unidade;
+    WHERE numero = p_numero_unidade and bloco = p_bloco;
 
     FOREACH v_telefone in Array p_numero_telefones LOOP
     	call inserirTelefoneMorador(v_telefone,p_cpf);

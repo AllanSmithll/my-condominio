@@ -1,0 +1,22 @@
+Exercício 1:
+Crie um trigger que, ao inserir ou atualizar um registro na tabela "Morador", registre uma entrada correspondente na tabela de "Log_Moradores" para registrar a data e a ação (entrada ou saída) do morador.
+
+RESPOSTAS
+
+1- Deu errado, mas é basicamente isso
+CREATE OR REPLACE FUNCTION logMoradorTrigger() RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        INSERT INTO LOG_MORADORES (cpf, nome, data_registro, operacao)
+        VALUES (new.cpf, new.nome, current_timestamp, 'INSERT');
+    ELSIF TG_OP = 'DELETE' THEN
+        INSERT INTO LOG_MORADORES (cpf, nome, data_registro, operacao)
+        VALUES (old.cpf, old.nome, current_timestamp, 'DELETE');
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+create trigger log_morador_trigger
+after insert or delete on morador
+for each row execute function logMoradorTrigger();
