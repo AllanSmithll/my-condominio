@@ -1,11 +1,12 @@
 -- Tabelas do condomínio - atualizado em 08/07/2023
 -- Tabela UNIDADE_HABITACIONAL
 create table UNIDADE_HABITACIONAL (
-	numero serial not null primary key,
+	numero serial not null,
 	bloco char(1) not null,
 	area decimal not null default 20.00,
 	proprietario varchar(100) default 'Disponível',
 	numero_moradores int not null default 0
+	primary key (numero, bloco)
 );
 
 -- Tabela MORADOR

@@ -1,24 +1,26 @@
 -- Funções do My Codominio de Inserções
 
 -- Unidade Habitacional
-CREATE OR REPLACE Procedure inserirUnidadeHabitacional(
+CREATE OR REPLACE PROCEDURE inserirUnidadeHabitacional(
     p_bloco CHAR(1),
     p_area DECIMAL,
-    p_proprietario varchar(100) DEFAULT 'Disponível'
+    p_proprietario VARCHAR(100) DEFAULT 'Disponível'
 ) AS $$
 DECLARE
     v_proximo_id INT;
 BEGIN
     SELECT COALESCE(MAX(numero::INT) + 1, 1) INTO v_proximo_id
-    FROM UNIDADE_HABITACIONAL;
+    FROM UNIDADE_HABITACIONAL
+    WHERE bloco = p_bloco;
     v_proximo_id := LPAD(v_proximo_id::TEXT, 4, '0');
 
-    if p_proprietario <> '' or p_proprietario <> ' '  then
-        INSERT INTO UNIDADE_HABITACIONAL (numero, bloco, area, proprietario) VALUES (v_proximo_id, p_bloco, p_area, p_proprietario);
-    end if;
-
-    INSERT INTO UNIDADE_HABITACIONAL (numero, bloco, area)
-    VALUES (v_proximo_id, p_bloco, p_area);
+    IF p_proprietario <> '' OR p_proprietario <> ' ' THEN
+        INSERT INTO UNIDADE_HABITACIONAL (numero, bloco, area, proprietario)
+        VALUES (v_proximo_id, p_bloco, p_area, p_proprietario);
+    ELSE
+        INSERT INTO UNIDADE_HABITACIONAL (numero, bloco, area)
+        VALUES (v_proximo_id, p_bloco, p_area);
+    END IF;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -28,14 +30,15 @@ CREATE OR REPLACE Procedure inserirMorador(
     p_nome VARCHAR(100),
     p_email VARCHAR(50),
     p_numero_unidade INT,
+	p_bloco morador.blocounidade%type,
     p_numero_telefones text[] DEFAULT '{}'
 )  AS $$
 DECLARE
     v_numero_moradores INTEGER;
 	v_telefone text;
 BEGIN
-    INSERT INTO MORADOR (cpf, nome, email, numeroUnidade)
-    VALUES (p_cpf, p_nome, p_email, p_numero_unidade);
+    INSERT INTO MORADOR (cpf, nome, email, numeroUnidade, blocoUnidade)
+    VALUES (p_cpf, p_nome, p_email, p_numero_unidade, p_bloco);
 
     SELECT numero_moradores INTO v_numero_moradores
     FROM UNIDADE_HABITACIONAL
