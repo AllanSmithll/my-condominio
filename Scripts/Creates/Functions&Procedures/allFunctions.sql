@@ -1,5 +1,5 @@
 /* Função para calcular o tamanho do bloco a partir da quantidade de metros
-quadradros da unidades habitacionais */
+quadrados das unidades habitacionais */
 create or replace function areaTotalBloco(blocounidade unidade_habitacional.bloco%type)
 returns numeric as $$
 declare
